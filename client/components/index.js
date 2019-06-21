@@ -5,4 +5,7 @@
  */
 export {default as Navbar} from './navbar'
 export {default as UserHome} from './user-home'
+export {default as CodeEditor} from './CodeEditor'
+export {default as MainApp} from './mainapp'
+export {default as Mic} from './mic'
 export {Login, Signup} from './auth-form'
