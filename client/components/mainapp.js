@@ -3,15 +3,21 @@ import {CodeEditor, Mic} from './'
 import twoSumWorker from './twoSumWorker'
 import targetSumWorker from './targetSumWorker'
 import WebWorker from './WebWorker'
+import ChatRoom from './ChatRoom'
+import {connect} from 'react-redux'
+import {setRoomThunk} from '../store/room'
 
 class MainApp extends React.Component {
   constructor() {
     super()
     this.state = {
-      code: '//Please Choose A Problem',
       worker: '',
       result: ''
     }
+  }
+
+  componentDidMount = () => {
+    this.props.setRoom(this.props.match.params.roomId)
   }
 
   handleOnRun = () => {
@@ -47,15 +53,11 @@ class MainApp extends React.Component {
     })
   }
 
-  onChange = newValue => {
-    this.setState({code: newValue})
-  }
-
   render() {
     return (
       <div className="row">
-        <div className="col s2">
-          List of Problems
+        <div className="col s1">
+          {/* List of Problems
           <ul>
             <li onClick={this.handleChangeProblem}>
               <button name="twoSum" type="submit">
@@ -67,26 +69,20 @@ class MainApp extends React.Component {
                 Target Sum
               </button>
             </li>
-          </ul>
+          </ul> */}
         </div>
-        <div className="col s7">
-          <CodeEditor
-            handleOnChange={this.onChange}
-            handleOnRun={this.handleOnRun}
-            code={this.state.code}
-          />
+        <div className="editor col s6">
+          <div className="row">{this.props.room.length && <CodeEditor />}</div>
           <div className="row">
             {/* <div className="col s11">Recording: <Mic /></div> */}
-            <div className="col s1">
-              <button
-                className="btn waves-effect waves-light"
-                type="submit"
-                name="action"
-                onClick={this.handleOnRun}
-              >
-                Run
-              </button>
-            </div>
+            <button
+              className="btn waves-effect waves-light"
+              type="submit"
+              name="action"
+              onClick={this.handleOnRun}
+            >
+              Run
+            </button>
           </div>
           <div />
           <div className="row">
@@ -100,10 +96,22 @@ class MainApp extends React.Component {
             />
           </div>
         </div>
-        <div className="col s3">Message Area</div>
+        <div className="col s5">{this.props.room.length && <ChatRoom />}</div>
       </div>
     )
   }
 }
 
-export default MainApp
+const mapState = state => {
+  return {
+    room: state.room
+  }
+}
+
+const mapDispatch = dispatch => {
+  return {
+    setRoom: roomId => dispatch(setRoomThunk(roomId))
+  }
+}
+
+export default connect(mapState, mapDispatch)(MainApp)
