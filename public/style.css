@@ -1,8 +1,38 @@
 body {
   font-family: sans-serif;
   height: 100%;
-  color: red;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+}
+
+h2 {
+  font-size: 2em;
+}
+
+.welcome {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.welcome .btns {
+  justify-content: space-around;
+  display: flex;
+}
+
+.chat span {
+  font-size: 1.4em;
+}
+
+.chat .time {
+  display: block;
+  font-size: 1.2em;
+}
+
+.row .col {
+  padding: 0!;
+}
+
+.roomHeader {
+  font-size: 1.5em;
 }
