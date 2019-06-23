@@ -1,0 +1,28 @@
+diff a/client/components/welcome.js b/client/components/welcome.js	(rejected hunks)
+@@ -24 +24 @@ class Welcome extends React.Component {
+-      room = db.collection('chatroom').doc(joinRoomId);
++      room = db.collection('chatroom').doc(joinRoomId)
+@@ -42 +42 @@ class Welcome extends React.Component {
+-          <div className='col s12'>
++          <div className="col s12">
+@@ -53,10 +53,10 @@ class Welcome extends React.Component {
+-              <div className="input-field col s6">
+-                <input
+-                  placeholder="Enter Room ID To Join"
+-                  id="roomId"
+-                  type="text"
+-                  name="roomId"
+-                  className="validate center"
+-                />
+-                <label htmlFor="roomId">Room ID</label>
+-              </div>
++            <div className="input-field col s6">
++              <input
++                placeholder="Enter Room ID To Join"
++                id="roomId"
++                type="text"
++                name="roomId"
++                className="validate center"
++              />
++              <label htmlFor="roomId">Room ID</label>
++            </div>

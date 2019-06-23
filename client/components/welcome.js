@@ -16,7 +16,6 @@ class Welcome extends React.Component {
     const {roomAction} = this.state
     let room = ''
     this.props.setUserName(e.target.name.value)
-
     if (roomAction === 'create') {
       room = db.collection('chatroom').doc()
     } else if (roomAction === 'join') {
@@ -25,7 +24,6 @@ class Welcome extends React.Component {
     } else {
       console.log('solo action')
     }
-
     history.push(`/room/${room.id}`)
   }
 

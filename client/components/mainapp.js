@@ -4,15 +4,17 @@ import twoSumWorker from './twoSumWorker'
 import targetSumWorker from './targetSumWorker'
 import WebWorker from './WebWorker'
 import ChatRoom from './ChatRoom'
+import ProblemList from './problemList'
 import {connect} from 'react-redux'
 import {setRoomThunk} from '../store/room'
+import db from '../../server/firebase/init'
 
 class MainApp extends React.Component {
   constructor() {
     super()
+    this.room = db.collection('room')
     this.state = {
-      worker: '',
-      result: ''
+      worker: twoSumWorker
     }
   }
 
@@ -22,15 +24,17 @@ class MainApp extends React.Component {
 
   handleOnRun = () => {
     this.worker = new WebWorker(this.state.worker)
-    this.worker.addEventListener('message', e => {
-      this.setState({
+    this.worker.addEventListener('message', async e => {
+      await this.room.doc(this.props.room).set({
         result: e.data + ''
       })
     })
-    this.worker.postMessage({code: this.state.code})
+    this.worker.postMessage({code: this.props.code})
+    //Terminate worker after 10s
+    setTimeout(() => this.worker.terminate(), 10000)
   }
 
-  handleChangeProblem = e => {
+  handleChangeProblem = async e => {
     let newCode = ''
     let newWorker = ''
     switch (e.target.name) {
@@ -47,8 +51,12 @@ class MainApp extends React.Component {
       default:
         break
     }
+
+    await this.room.doc(this.props.room).set({
+      code: newCode
+    })
+
     this.setState({
-      code: newCode,
       worker: newWorker
     })
   }
@@ -56,20 +64,8 @@ class MainApp extends React.Component {
   render() {
     return (
       <div className="row">
-        <div className="col s1">
-          {/* List of Problems
-          <ul>
-            <li onClick={this.handleChangeProblem}>
-              <button name="twoSum" type="submit">
-                Two Sum
-              </button>
-            </li>
-            <li onClick={this.handleChangeProblem}>
-              <button name="targetSum" type="submit">
-                Target Sum
-              </button>
-            </li>
-          </ul> */}
+        <div className="col s2">
+          <ProblemList handleChangeProblem={this.handleChangeProblem} />
         </div>
         <div className="editor col s6">
           <div className="row">{this.props.room.length && <CodeEditor />}</div>
@@ -89,14 +85,14 @@ class MainApp extends React.Component {
             <label htmlFor="disabled">Result: </label>
             <input
               disabled
-              value={this.state.result}
+              value={this.props.result}
               id="disabled"
               type="text"
               className="validate"
             />
           </div>
         </div>
-        <div className="col s5">{this.props.room.length && <ChatRoom />}</div>
+        <div className="col s4">{this.props.room.length && <ChatRoom />}</div>
       </div>
     )
   }
@@ -104,7 +100,9 @@ class MainApp extends React.Component {
 
 const mapState = state => {
   return {
-    room: state.room
+    room: state.room,
+    code: state.code,
+    result: state.result
   }
 }
 

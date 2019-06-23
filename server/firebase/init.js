@@ -1,6 +1,7 @@
 import firebase from 'firebase/app'
 import firestore from 'firebase/firestore'
 
+console.log(process.env.FIREBASE_CONFIG, 'api')
 const firebaseConfig = {
   apiKey: 'AIzaSyCpr8pBUd4u_pgv6_uoMHtZzTLBje10gnI',
   authDomain: 'reacton-8068b.firebaseapp.com',
